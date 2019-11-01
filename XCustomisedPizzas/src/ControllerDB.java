@@ -50,19 +50,10 @@ public class ControllerDB {
             else if(tableName.equals("inventory")) {
             	while(rs.next())
                 {
-//            		Date date;
-//            		Timestamp timestamp = rs.getTimestamp("date_time");
-//            		if (timestamp != null)
-//            		    date = new java.util.Date(timestamp.getTime());
             		Ingredient ing = new Ingredient(rs.getString("id"),rs.getString("name"),rs.getString("type"),rs.getString("amount"),rs.getString("unit"),"",String.valueOf(rs.getDate("date_time")+" "+rs.getTime("date_time")));
             		ingredientListDB.add(ing);
                 }
             }
-//            while(rs.next())
-//            {
-//            	Order p = new Order(rs.getString("id"),rs.getString("orderList"),rs.getString("customerName"),rs.getString("status"));
-//            	orderListDB.add(p);
-//            }
             rs.close();
             stmt.close();
             con.close();
@@ -122,11 +113,6 @@ public class ControllerDB {
             Double totalNewAmount = Double.valueOf(current);
             totalNewAmount = totalNewAmount+Double.valueOf(update);
             
-//            System.out.println("=========================");
-//            System.out.println(ing.getNewAmount()+", "+ing.getNewAmount());
-//            System.out.println(Double.valueOf(ing.getNewAmount())+Double.valueOf(ing.getNewAmount()));
-//            System.out.println("Total: "+totalNewAmount);
-
             String query = "update ingredients set amount = "+ totalNewAmount +" where id = "+ing.getID(); 
 
             ResultSet rs = stmt.executeQuery(query);
@@ -153,4 +139,5 @@ public class ControllerDB {
 		return result;
 	}
 	
+
 }
