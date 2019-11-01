@@ -95,23 +95,4 @@ public class Order {
 		return getID()+" : "+getBase()+" : "+getToppings()+" : "+getStatus();
 	}
 
-//	public static void main(String[] args) {
-////		Order test = new Order("7894561230","Mickey Mouse","waiting");
-////		System.out.println(test);
-//		
-//		String test = "1 X Cheese+Mushroom, 1 X Vegan";
-//		test = test.replaceAll(",", "\n");
-////		test = test.replaceAll("+", "\n");
-//		System.out.println(test.contains("+"));
-//		if(test.contains("+")) {
-//			test = test.replaceAll("+", "\n");
-//		}
-//		System.out.println(test);
-//		
-//		test = test.replaceAll("\n", ", ");
-//		
-//		System.out.println(test);
-//
-//	}
-
 }

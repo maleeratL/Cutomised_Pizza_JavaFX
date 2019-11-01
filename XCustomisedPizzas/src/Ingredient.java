@@ -149,9 +149,4 @@ public class Ingredient {
 		return getID()+" : "+getName()+" : "+getAmount()+" "+getUnit();
 	}
 
-	//	public static void main(String[] args) {
-	//		// TODO Auto-generated method stub
-	//
-	//	}
-
 }
