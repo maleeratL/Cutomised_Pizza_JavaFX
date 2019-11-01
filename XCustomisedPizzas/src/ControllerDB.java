@@ -76,5 +76,81 @@ public class ControllerDB {
 		}
 		return result;
 	}
+	
+	public boolean updateOrderStatusSQL(String dbUser,String usrPass,Order o) {
+		boolean result= false;
+		try {
+            Class.forName("org.mariadb.jdbc.Driver");
 
+            Connection con = null;
+
+            String url = "jdbc:mariadb://localhost/pizzadb";
+
+            con = DriverManager.getConnection(url, dbUser, usrPass);
+
+            Statement stmt = con.createStatement();     
+           
+            String query = "update orders set status = 'produced' where id = "+o.getID(); 
+            
+            ResultSet rs = stmt.executeQuery(query);
+            
+            rs.close();
+            stmt.close();
+            con.close();
+            result =true;
+		}
+		catch(Exception ex) {
+//			System.out.println("Cannot Save");
+			result =false;
+		}
+		return result;
+	}
+	
+	public boolean updateStockSQL(String dbUser,String usrPass,Ingredient ing,String current, String update) {
+		boolean result= false;
+		try {
+            Class.forName("org.mariadb.jdbc.Driver");
+
+            Connection con = null;
+
+            String url = "jdbc:mariadb://localhost/pizzadb";
+
+            con = DriverManager.getConnection(url, dbUser, usrPass);
+
+            Statement stmt = con.createStatement();  
+
+            Double totalNewAmount = Double.valueOf(current);
+            totalNewAmount = totalNewAmount+Double.valueOf(update);
+            
+//            System.out.println("=========================");
+//            System.out.println(ing.getNewAmount()+", "+ing.getNewAmount());
+//            System.out.println(Double.valueOf(ing.getNewAmount())+Double.valueOf(ing.getNewAmount()));
+//            System.out.println("Total: "+totalNewAmount);
+
+            String query = "update ingredients set amount = "+ totalNewAmount +" where id = "+ing.getID(); 
+
+            ResultSet rs = stmt.executeQuery(query);
+
+            rs.close();
+
+            query = "insert into inventory (name,type,amount,unit,date_time)VALUES(?,?,?,?,now())";
+            PreparedStatement preparedStmt = con.prepareStatement(query);
+            preparedStmt.setString (1, ing.getName());
+            preparedStmt.setString (2, ing.getType());
+            preparedStmt.setString (3, ing.getNewAmount());
+            preparedStmt.setString (4, ing.getUnit());
+            preparedStmt.execute();
+            
+            
+            stmt.close();
+            con.close();
+            result =true;
+		}
+		catch(Exception ex) {
+//			System.out.println("Cannot Save");
+			result =false;
+		}
+		return result;
+	}
+	
 }
