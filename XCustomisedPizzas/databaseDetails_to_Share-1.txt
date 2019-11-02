@@ -1,0 +1,48 @@
+31/10/2019
+-----------------------------------------------------------------------------------------------------------------
+CREATE TABLE customers(id int AUTO_INCREMENT PRIMARY KEY, name varchar(255), address varchar(255), memberId int);
+
+CREATE TABLE members(id int AUTO_INCREMENT PRIMARY KEY, username varchar(255), password varchar(255), email varchar(255), customerId int);
+
+CREATE TABLE orders(id int AUTO_INCREMENT PRIMARY KEY, base varchar(255), toppings varchar(4000), status varchar(255), customerId int);
+
+CREATE TABLE ingredients(id int AUTO_INCREMENT PRIMARY KEY, name varchar(255), type varchar(255), amount Double, unit varchar(255));
+
+CREATE TABLE inventory(id int AUTO_INCREMENT PRIMARY KEY, name varchar(255), type varchar(255), amount Double, unit varchar(255), date_time DATETIME);
+
+describe customers;
+describe members;
+describe orders;
+describe ingredients;
+describe inventory;
+
+
+insert in to table:ingredients 
+-------------------------------------------------------------------------------------------
+INSERT INTO ingredients (name,type,amount,unit)VALUES('tomatoes','veggies',1000,'grams');
+INSERT INTO ingredients (name,type,amount,unit)VALUES('onions','veggies',1000,'grams');
+INSERT INTO ingredients (name,type,amount,unit)VALUES('spinach','veggies',1000,'grams');
+INSERT INTO ingredients (name,type,amount,unit)VALUES('capsicum','veggies',1000,'grams');
+INSERT INTO ingredients (name,type,amount,unit)VALUES('basil','veggies',1000,'grams');
+INSERT INTO ingredients (name,type,amount,unit)VALUES('pineapple','fruit',1000,'grams');
+INSERT INTO ingredients (name,type,amount,unit)VALUES('chicken','meat',2000,'grams');
+INSERT INTO ingredients (name,type,amount,unit)VALUES('sausage','meat',2000,'grams');
+INSERT INTO ingredients (name,type,amount,unit)VALUES('ham','meat',2000,'grams');
+INSERT INTO ingredients (name,type,amount,unit)VALUES('bacon','meat',2000,'grams');
+INSERT INTO ingredients (name,type,amount,unit)VALUES('thin crust','Base',4000,'grams');
+INSERT INTO ingredients (name,type,amount,unit)VALUES('thick crust','Base',4000,'grams');
+
+
+INSERT INTO inventory (name,type,amount,unit,date_time)VALUES('tomatoes','veggies',1000,'grams',now());
+INSERT INTO inventory (name,type,amount,unit,date_time)VALUES('onions','veggies',1000,'grams',now());
+INSERT INTO inventory (name,type,amount,unit,date_time)VALUES('spinach','veggies',1000,'grams',now());
+INSERT INTO inventory (name,type,amount,unit,date_time)VALUES('capsicum','veggies',1000,'grams',now());
+INSERT INTO inventory (name,type,amount,unit,date_time)VALUES('basil','veggies',1000,'grams',now());
+INSERT INTO inventory (name,type,amount,unit,date_time)VALUES('pineapple','fruit',1000,'grams',now());
+INSERT INTO inventory (name,type,amount,unit,date_time)VALUES('chicken','meat',2000,'grams',now());
+INSERT INTO inventory (name,type,amount,unit,date_time)VALUES('sausage','meat',2000,'grams',now());
+INSERT INTO inventory (name,type,amount,unit,date_time)VALUES('ham','meat',2000,'grams',now());
+INSERT INTO inventory (name,type,amount,unit,date_time)VALUES('bacon','meat',2000,'grams',now());
+INSERT INTO inventory (name,type,amount,unit,date_time)VALUES('thin crust','Base',4000,'grams',now());
+INSERT INTO inventory (name,type,amount,unit,date_time)VALUES('thick crust','Base',4000,'grams',now());
+
