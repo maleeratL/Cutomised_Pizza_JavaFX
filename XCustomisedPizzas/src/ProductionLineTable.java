@@ -73,7 +73,7 @@ public class ProductionLineTable extends Application {
 	   labelHbTab1.getChildren().add(labelTab1);
 
 	   statusbtn = new Button("Update Status");
-//	   statusbtn.setOnAction(new StatusButtonListener());
+	   statusbtn.setOnAction(new StatusButtonListener());
 	   statusbtn.setVisible(false);
 //	   delbtn = new Button("Delete");
 //	   delbtn.setOnAction(new DeleteButtonListener());
@@ -579,8 +579,23 @@ public class ProductionLineTable extends Application {
 		}
 	}
 
-  
+   private class StatusButtonListener implements EventHandler<ActionEvent> {
 
+	   @Override
+	   public void handle(ActionEvent e) {
+		   Order selectedItems = tableOrder.getSelectionModel().getSelectedItems().get(0);
+		   selectedItems.setStatus("Produced");
+		   String first_Column = selectedItems.toString().split(",")[0].substring(0);
+		   System.out.println(first_Column);
+		   ordertxtStatus.setText(first_Column);
+		   
+		   ControllerDB db = new ControllerDB();
+		   db.updateOrderStatusSQL(dbUser, usrPass,selectedItems);
+		   
+		   DeleteButtonListener del = new DeleteButtonListener();
+		   del.handle(e);
+	   }
+   }
    
    public static void main(String [] args) {
       Application.launch(args);
