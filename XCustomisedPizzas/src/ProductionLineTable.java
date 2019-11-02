@@ -99,7 +99,7 @@ public class ProductionLineTable extends Application {
 	   labelHbTab2.getChildren().add(labelTab2);
 
 	   reorderbtn = new Button("Reorder");
-//	   reorderbtn.setOnAction(new ReorderButtonListener());
+	   reorderbtn.setOnAction(new ReorderButtonListener());
 	   reorderbtn.setVisible(false);
 
 	   HBox buttonHbTab2 = new HBox(10);
@@ -596,6 +596,24 @@ public class ProductionLineTable extends Application {
 		   del.handle(e);
 	   }
    }
+
+
+   private class ReorderButtonListener implements EventHandler<ActionEvent> {
+
+	   @Override
+	   public void handle(ActionEvent e) {
+		   Ingredient selectedItems = tableReorder.getSelectionModel().getSelectedItems().get(0);
+		   String first_Column = selectedItems.toString().split(",")[0].substring(0);
+		   ControllerDB db = new ControllerDB();
+		
+		   db.updateStockSQL(dbUser, usrPass,selectedItems,selectedItems.getAmount(),selectedItems.getNewAmount());
+		   System.out.println(selectedItems.getAmount()+", "+selectedItems.getNewAmount());
+
+		   DeleteIngredientListener del = new DeleteIngredientListener();
+		   del.handle(e);
+	   }
+   }
+
    
    public static void main(String [] args) {
       Application.launch(args);
