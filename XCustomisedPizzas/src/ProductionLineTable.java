@@ -396,7 +396,32 @@ public class ProductionLineTable extends Application {
 	   tableInventory.setEditable(true);
 	       
    }
- 
+   
+   private Callback<TableColumn<Order, String>, TableCell<Order, String>> getCustomCellFactory(final String color,String fontSize, String fontWeight,String fontFamily,String textAlign) {
+       return new Callback<TableColumn<Order, String>, TableCell<Order, String>>() {
+
+           @Override
+           public TableCell<Order, String> call(TableColumn<Order, String> param) {
+               TableCell<Order, String> cell = new TableCell<Order, String>() {
+
+                   @Override
+                   public void updateItem(final String item, boolean empty) {
+                       if (item != null) {
+                           setText(item);
+                           setStyle("-fx-text-fill: " + color + ";\n"+
+                        		   "-fx-font-size: " + fontSize + ";\n"+
+                        		   "-fx-font-family: " + fontFamily + ";\n"+
+                        		   "-fx-alignment: " + textAlign + ";\n"+
+                        		   "-fx-font-weight: " + fontWeight + ";");
+//                           setStyle("-fx-font-size: " + fontsize + ";");
+//                           setStyle("-fx-font-family: " + fontfamily + ";");
+                       }
+                   }
+               };
+               return cell;
+           }
+       };
+   }
    
    
    private class RowChangeHandler implements ChangeListener {
@@ -481,7 +506,82 @@ public class ProductionLineTable extends Application {
 	   }
 	   return records;
    }
-      
+   
+   
+   
+   private class DeleteButtonListener implements EventHandler<ActionEvent> {
+
+		@Override
+		public void handle(ActionEvent e) {
+
+			// Get selected row and delete
+			int ix = tableOrder.getSelectionModel().getSelectedIndex();
+			Order ordertxt = (Order) tableOrder.getSelectionModel().getSelectedItem();
+			if(tableOrder.getItems().size()!=0) {
+				dataOrder.remove(ix);
+				
+				//call to save to DB here for reorder0
+			}
+			
+			ordertxtStatus.setText("Deleted: " + ordertxt.toString());
+
+			// Select a row
+			if (tableOrder.getItems().size() == 0) {
+
+				ordertxtStatus.setText("No data in table !");
+//				delbtn.setVisible(false);
+				return;
+			}
+
+			if (ix != 0) {
+
+				ix = ix -1;
+			}
+
+			tableOrder.requestFocus();
+			tableOrder.getSelectionModel().select(ix);
+			tableOrder.getFocusModel().focus(ix);
+		}
+	}
+   
+   private class DeleteIngredientListener implements EventHandler<ActionEvent> {
+
+		@Override
+		public void handle(ActionEvent e) {
+
+			// Get selected row and delete
+			int ix = tableReorder.getSelectionModel().getSelectedIndex();
+			Ingredient ordertxt = (Ingredient) tableReorder.getSelectionModel().getSelectedItem();
+			if(tableReorder.getItems().size()!=0) {
+				dataReorder.remove(ix);
+				
+				//call to save to DB here for reorder0
+			}
+			
+			reordertxtStatus.setText("Reorder: " + ordertxt.toString());
+
+			// Select a row
+			if (tableReorder.getItems().size() == 0) {
+
+				reordertxtStatus.setText("No data in table !");
+//				delbtn.setVisible(false);
+				return;
+			}
+
+			if (ix != 0) {
+
+				ix = ix -1;
+			}
+
+			tableReorder.requestFocus();
+			tableReorder.getSelectionModel().select(ix);
+			tableReorder.getFocusModel().focus(ix);
+		}
+	}
+
+  
+
+   
    public static void main(String [] args) {
       Application.launch(args);
    }
