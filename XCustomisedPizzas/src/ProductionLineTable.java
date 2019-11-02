@@ -394,7 +394,32 @@ public class ProductionLineTable extends Application {
 	   tableInventory.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 	   tableInventory.getSelectionModel().selectedIndexProperty().addListener(new RowChangeHandlerReorder());
 	   tableInventory.setEditable(true);
-	       
+	   
+	   
+	   FilteredList<Ingredient> filteredData = new FilteredList<Ingredient>(dataInventory, p -> true);
+
+	   filterField.textProperty().addListener((observable, oldValue, newValue) -> {
+           filteredData.setPredicate(ing -> {
+               if (newValue == null || newValue.isEmpty()) {
+                   return true;
+               }
+               
+               String lowerCaseFilter = newValue.toLowerCase();
+               
+               if (ing.getName().toLowerCase().contains(lowerCaseFilter)) {
+                   return true; 
+               } else if (ing.getType().toLowerCase().contains(lowerCaseFilter)) {
+                   return true;
+               } else if (ing.getDateTime().toLowerCase().contains(lowerCaseFilter)) {
+                   return true;
+               } else if (ing.getAmount().toLowerCase().contains(lowerCaseFilter)) {
+                   return true;
+               }
+               return false;
+           });
+           tableInventory.setItems(filteredData);
+       });
+     
    }
    
    private Callback<TableColumn<Order, String>, TableCell<Order, String>> getCustomCellFactory(final String color,String fontSize, String fontWeight,String fontFamily,String textAlign) {
