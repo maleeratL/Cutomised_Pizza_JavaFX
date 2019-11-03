@@ -1,6 +1,5 @@
 package Cutomer;
 
-
 import javafx.application.*;
 import javafx.beans.value.*;
 import javafx.collections.*;
@@ -31,17 +30,23 @@ public class ProductionLineTable extends Application {
    private ObservableList dataProduced;
    private ObservableList dataInventory;
    private TextField filterField;
+   private TextField filterStockField;
+   private TextField nameField;
+   private TextField typeField;
+   private TextField amountField;
 //   private HBox orderHb;
-   private Text ordertxtStatus;
+//   private Text ordertxtStatus;
    private Text reordertxtStatus;
+   private Text addtxtStock;
    private VBox vboxTab1;
    private VBox vboxTab2;
    private VBox vboxTab3;
    private VBox vboxTab4;
    private VBox vboxTab5;
-   private ComboBox comboBox;
+//   private ComboBox comboBox;
    private Button statusbtn;
-//   private Button delbtn;
+   private Button delbtn;
+   private Button addbtn;
    private Button reorderbtn;
    
    private String dbUser = "myuser";
@@ -49,7 +54,7 @@ public class ProductionLineTable extends Application {
    
    @Override
    public void start(Stage primaryStage) {
-      primaryStage.setTitle("tableOrder View Demonstration.");
+      primaryStage.setTitle("TableOrder View");
       this.setOrderTable();
       this.setReorderTable();
       this.setStockTable();
@@ -63,8 +68,9 @@ public class ProductionLineTable extends Application {
    }
    
    public void headingTabSetUp() {
-	   ordertxtStatus = new Text();
+//	   ordertxtStatus = new Text();
 	   reordertxtStatus = new Text();
+	   addtxtStock = new Text();
 	   //====================== Tab 1 ======================
 	   Label labelTab1 = new Label("Current Order List");
 	   labelTab1.setTextFill(Color.DARKBLUE);
@@ -85,11 +91,11 @@ public class ProductionLineTable extends Application {
 	   buttonHbTab1.getChildren().addAll(statusbtn);
 //	   buttonHbTab1.getChildren().addAll(statusbtn,delbtn);
 
-	   reordertxtStatus.setText("Reorder Amount >> Double click on number");
+//	   reordertxtStatus.setText("Reorder Amount >> Double click on number");
 
 	   vboxTab1 = new VBox(20);
 	   vboxTab1.setPadding(new Insets(20, 20, 20, 20));
-	   vboxTab1.getChildren().addAll(labelHbTab1, tableOrder, ordertxtStatus,buttonHbTab1);
+	   vboxTab1.getChildren().addAll(labelHbTab1, tableOrder,buttonHbTab1);
 
 	   //====================== Tab 2 ======================
 	   Label labelTab2 = new Label("Reorder List");
@@ -98,6 +104,8 @@ public class ProductionLineTable extends Application {
 	   HBox labelHbTab2 = new HBox();
 	   labelHbTab2.setAlignment(Pos.CENTER);
 	   labelHbTab2.getChildren().add(labelTab2);
+	   
+	   reordertxtStatus.setText("Reorder Amount >> Double click on number");
 
 	   reorderbtn = new Button("Reorder");
 	   reorderbtn.setOnAction(new ReorderButtonListener());
@@ -120,9 +128,31 @@ public class ProductionLineTable extends Application {
 	   labelHbTab3.setAlignment(Pos.CENTER);
 	   labelHbTab3.getChildren().add(labelTab3);
 
+	   addbtn = new Button("Add");
+	   addbtn.setOnAction(new AddButtonListener());
+	   delbtn = new Button("Delete");
+	   delbtn.setOnAction(new DeleteStockButtonListener());
+	   
+	   nameField = new TextField();
+	   nameField.setId("textField");
+	   nameField.setPromptText("Name");
+	   
+	   typeField = new TextField();
+	   typeField.setId("textField");
+	   typeField.setPromptText("Type");
+	   
+	   amountField = new TextField();
+	   amountField.setId("textField");
+	   amountField.setPromptText("Amount");
+
+	   HBox buttonHb = new HBox(10);
+	   buttonHb.setAlignment(Pos.CENTER);
+	   buttonHb.setPadding(new Insets(0, 0, 20, 0));
+	   buttonHb.getChildren().addAll(nameField,typeField,amountField,addbtn,delbtn);
+
 	   vboxTab3 = new VBox(20);
 	   vboxTab3.setPadding(new Insets(20, 20, 20, 20));
-	   vboxTab3.getChildren().addAll(labelHbTab3, tableStock);
+	   vboxTab3.getChildren().addAll(labelHbTab3, tableStock,addtxtStock,buttonHb);
 
 
 	   //====================== Tab 4 ======================
@@ -145,18 +175,18 @@ public class ProductionLineTable extends Application {
 	   labelHbTab5.setAlignment(Pos.CENTER);
 	   labelHbTab5.getChildren().add(labelTab5);
 	   
-	   comboBox = new ComboBox();
-	   comboBox.setValue("All");
-       comboBox.getItems().add("Name");
-       comboBox.getItems().add("Type");
-       comboBox.getItems().add("Amount");
-       comboBox.getItems().add("Date and Time");
-
-       VBox hboxTab5 = new VBox(filterField,comboBox);
+//	   comboBox = new ComboBox();
+//	   comboBox.setValue("All");
+//       comboBox.getItems().add("Name");
+//       comboBox.getItems().add("Type");
+//       comboBox.getItems().add("Amount");
+//       comboBox.getItems().add("Date and Time");
+//
+//       VBox hboxTab5 = new VBox(filterField,comboBox);
 
 	   vboxTab5 = new VBox(20);
 	   vboxTab5.setPadding(new Insets(20, 20, 20, 20));
-	   vboxTab5.getChildren().addAll(labelHbTab5,hboxTab5,tableInventory);
+	   vboxTab5.getChildren().addAll(labelHbTab5,filterField,tableInventory);
    }
 
    public void tabListener(Tab tab,Tab tab2,Tab tab3, Tab tab4,Tab tab5) {
@@ -167,6 +197,9 @@ public class ProductionLineTable extends Application {
 			   tableProduced.getItems().clear();
 			   dataOrder = dummydataOrder("waiting");
 			   tableOrder.setItems(dataOrder);
+//			   if (tableOrder.getItems().size() > 0) {
+//				   ordertxtStatus.setText("");
+//			   }
 		   }
 	   });
 	   
@@ -193,6 +226,8 @@ public class ProductionLineTable extends Application {
 			   tableReorder.getItems().clear();
 			   tableProduced.getItems().clear();
 //			   tableInventory.getItems().clear();
+			   addtxtStock.setText("");
+			   delbtn.setVisible(false);
 			   dataStock = dummydataIngredient();
 			   tableStock.setItems(dataStock);
 		   }
@@ -262,7 +297,7 @@ public class ProductionLineTable extends Application {
 	   toppingsDetailsCol.setCellValueFactory(new PropertyValueFactory<>("toppings"));
 	   TableColumn<Order,String> customerIdCol = new TableColumn<>("Customer ID");
 	   customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customersId"));
-	   TableColumn<Order,String> statusCol = new TableColumn("status");
+	   TableColumn<Order,String> statusCol = new TableColumn("Status");
 	   statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
 
 	   tableOrder.getColumns().setAll(IDCol, baseDetailsCol,toppingsDetailsCol,customerIdCol, statusCol);
@@ -272,6 +307,13 @@ public class ProductionLineTable extends Application {
 	   tableOrder.getSelectionModel().selectedIndexProperty().addListener(new RowChangeHandler());
 	   tableOrder.setEditable(true);
 	   
+//	   IDCol.setCellFactory(getCustomCellFactory("black","14px","normal","Arial","top_center"));
+//	   statusCol.setCellFactory(getCustomCellFactory("black","14px","bold","Arial","center"));
+	   
+//	   statusCol.setCellFactory(TextFieldTableCell.forTableColumn());
+//	   statusCol.setOnEditCommit(event -> (event.getTableView().
+//			   getItems().get(event.getTablePosition().getRow())).
+//			   setStatus(event.getNewValue()));
    }
    
    public void setReorderTable() {
@@ -279,6 +321,8 @@ public class ProductionLineTable extends Application {
 	   dataReorder = dummydataReorder();
 	   tableReorder.setItems(dataReorder);
 	   
+//	   TableColumn<Ingredient,String> IDCol = new TableColumn<>("ID");
+//	   IDCol.setCellValueFactory(new PropertyValueFactory<>("ID"));
 	   TableColumn<Ingredient,String> amountCol = new TableColumn<>("Current Amount");
 	   amountCol.setCellValueFactory(new PropertyValueFactory<>("amount"));
 	   TableColumn<Ingredient,String> unitCol = new TableColumn<>("Unit");
@@ -327,7 +371,7 @@ public class ProductionLineTable extends Application {
 	   tableStock.setPrefWidth(400);
 	   tableStock.setPrefHeight(850);
 	   tableStock.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-	   tableStock.getSelectionModel().selectedIndexProperty().addListener(new RowChangeHandlerReorder());
+	   tableStock.getSelectionModel().selectedIndexProperty().addListener(new RowChangeHandlerStock());
 	   tableStock.setEditable(true);
 	   
 //	   statusCol.setCellFactory(getCustomCellFactory("red","16px","Arial","center"));
@@ -351,7 +395,7 @@ public class ProductionLineTable extends Application {
 	   toppingsDetailsCol.setCellValueFactory(new PropertyValueFactory<>("toppings"));
 	   TableColumn<Order,String> customerIdCol = new TableColumn<>("Customer ID");
 	   customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customersId"));
-	   TableColumn<Order,String> statusCol = new TableColumn("status");
+	   TableColumn<Order,String> statusCol = new TableColumn("Status");
 	   statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
 
 	   tableProduced.getColumns().setAll(IDCol, baseDetailsCol,toppingsDetailsCol,customerIdCol, statusCol);
@@ -423,31 +467,31 @@ public class ProductionLineTable extends Application {
      
    }
    
-   private Callback<TableColumn<Order, String>, TableCell<Order, String>> getCustomCellFactory(final String color,String fontSize, String fontWeight,String fontFamily,String textAlign) {
-       return new Callback<TableColumn<Order, String>, TableCell<Order, String>>() {
-
-           @Override
-           public TableCell<Order, String> call(TableColumn<Order, String> param) {
-               TableCell<Order, String> cell = new TableCell<Order, String>() {
-
-                   @Override
-                   public void updateItem(final String item, boolean empty) {
-                       if (item != null) {
-                           setText(item);
-                           setStyle("-fx-text-fill: " + color + ";\n"+
-                        		   "-fx-font-size: " + fontSize + ";\n"+
-                        		   "-fx-font-family: " + fontFamily + ";\n"+
-                        		   "-fx-alignment: " + textAlign + ";\n"+
-                        		   "-fx-font-weight: " + fontWeight + ";");
-//                           setStyle("-fx-font-size: " + fontsize + ";");
-//                           setStyle("-fx-font-family: " + fontfamily + ";");
-                       }
-                   }
-               };
-               return cell;
-           }
-       };
-   }
+//   private Callback<TableColumn<Order, String>, TableCell<Order, String>> getCustomCellFactory(final String color,String fontSize, String fontWeight,String fontFamily,String textAlign) {
+//       return new Callback<TableColumn<Order, String>, TableCell<Order, String>>() {
+//
+//           @Override
+//           public TableCell<Order, String> call(TableColumn<Order, String> param) {
+//               TableCell<Order, String> cell = new TableCell<Order, String>() {
+//
+//                   @Override
+//                   public void updateItem(final String item, boolean empty) {
+//                       if (item != null) {
+//                           setText(item);
+//                           setStyle("-fx-text-fill: " + color + ";\n"+
+//                        		   "-fx-font-size: " + fontSize + ";\n"+
+//                        		   "-fx-font-family: " + fontFamily + ";\n"+
+//                        		   "-fx-alignment: " + textAlign + ";\n"+
+//                        		   "-fx-font-weight: " + fontWeight + ";");
+////                           setStyle("-fx-font-size: " + fontsize + ";");
+////                           setStyle("-fx-font-family: " + fontfamily + ";");
+//                       }
+//                   }
+//               };
+//               return cell;
+//           }
+//       };
+//   }
    
    
    private class RowChangeHandler implements ChangeListener {
@@ -460,7 +504,7 @@ public class ProductionLineTable extends Application {
             return;
          }
         Order pb= (Order) dataOrder.get(val);
-        ordertxtStatus.setText(pb.toString());
+//        ordertxtStatus.setText(pb.toString());
         statusbtn.setVisible(true);
 //        reorderbtn.setVisible(true);
       }
@@ -479,6 +523,28 @@ public class ProductionLineTable extends Application {
 //	        ordertxtStatus.setText(pb.toString());
 //	        statusbtn.setVisible(true);
 	        reorderbtn.setVisible(true);
+	      }
+	   }
+   
+   private class RowChangeHandlerStock implements ChangeListener {
+	      @Override
+	      public void changed(ObservableValue ov, Object oldVal, Object newVal) {
+	         int val = ((Number)newVal).intValue();
+	         if (dataStock.size()<=0) {
+//	        	 statusbtn.setVisible(false);
+	        	 delbtn.setVisible(false);
+	            return;
+	         }
+	        Ingredient pb= (Ingredient) dataStock.get(val);
+//	        ordertxtStatus.setText(pb.toString());
+//	        statusbtn.setVisible(true);
+	        if(Integer.valueOf(pb.getAmount())==0) {
+	        	delbtn.setVisible(true);
+	        }
+	        else {
+	        	delbtn.setVisible(false);
+	        }
+//	        delbtn.setVisible(true);
 	      }
 	   }
    
@@ -549,12 +615,12 @@ public class ProductionLineTable extends Application {
 				//call to save to DB here for reorder0
 			}
 			
-			ordertxtStatus.setText("Deleted: " + ordertxt.toString());
+//			ordertxtStatus.setText("Deleted: " + ordertxt.toString());
 
 			// Select a row
 			if (tableOrder.getItems().size() == 0) {
 
-				ordertxtStatus.setText("No data in table !");
+//				ordertxtStatus.setText("No data in table !");
 //				delbtn.setVisible(false);
 				return;
 			}
@@ -589,7 +655,7 @@ public class ProductionLineTable extends Application {
 			// Select a row
 			if (tableReorder.getItems().size() == 0) {
 
-				reordertxtStatus.setText("No data in table !");
+//				reordertxtStatus.setText("No data in table !");
 //				delbtn.setVisible(false);
 				return;
 			}
@@ -612,12 +678,19 @@ public class ProductionLineTable extends Application {
 		   Order selectedItems = tableOrder.getSelectionModel().getSelectedItems().get(0);
 		   selectedItems.setStatus("Produced");
 		   String first_Column = selectedItems.toString().split(",")[0].substring(0);
-		   System.out.println(first_Column);
-		   ordertxtStatus.setText(first_Column);
+//		   System.out.println(first_Column);
+//		   ordertxtStatus.setText(first_Column);
 		   
 		   ControllerDB db = new ControllerDB();
 		   db.updateOrderStatusSQL(dbUser, usrPass,selectedItems);
 		   
+//		  for(Order o : dummydataOrder("waiting")) {
+//			  if(o.getID().equals(selectedItems.getID())) {
+//				  System.out.println("============================");
+//				  System.out.println(o.getID()+" : "+o.getToppings()+" : "+o.getStatus());
+//			  }
+//		  } 
+
 		   DeleteButtonListener del = new DeleteButtonListener();
 		   del.handle(e);
 	   }
@@ -629,17 +702,137 @@ public class ProductionLineTable extends Application {
 	   @Override
 	   public void handle(ActionEvent e) {
 		   Ingredient selectedItems = tableReorder.getSelectionModel().getSelectedItems().get(0);
+//		   selectedItems.setStatus("Produced");
 		   String first_Column = selectedItems.toString().split(",")[0].substring(0);
+//		   System.out.println(first_Column);
+//		   ordertxtStatus.setText(first_Column);
+
+//		   System.out.println(selectedItems.getAmount()+", "+selectedItems.getNewAmount());
 		   ControllerDB db = new ControllerDB();
+//		   db.accessSQL(dbUser, usrPass, "ingredients");
+//		   for(Ingredient ing:db.ingredientListDB) {
+//			   if(selectedItems.getID().equals(ing.getID())) {
+//				   db.updateStockSQL(dbUser, usrPass,new Ingredient(selectedItems.getID(),selectedItems.getName()
+//						   ,selectedItems.getType(),selectedItems.getAmount(),selectedItems.getUnit()
+//						   ,selectedItems.getNewAmount()));
+//			   }
+//		   }
 		
 		   db.updateStockSQL(dbUser, usrPass,selectedItems,selectedItems.getAmount(),selectedItems.getNewAmount());
-		   System.out.println(selectedItems.getAmount()+", "+selectedItems.getNewAmount());
+//		   System.out.println(selectedItems.getAmount()+", "+selectedItems.getNewAmount());
 
 		   DeleteIngredientListener del = new DeleteIngredientListener();
 		   del.handle(e);
 	   }
    }
+   public static boolean isDouble(String s) {
+	    try { 
+	        Double.parseDouble(s); 
+	    } catch(NumberFormatException e) { 
+	        return false; 
+	    } catch(NullPointerException e) {
+	        return false;
+	    }
+	    // only got here if we didn't return false
+	    return true;
+	}
+   
+   private class AddButtonListener implements EventHandler<ActionEvent> {
 
+		@Override
+		public void handle(ActionEvent e) {
+			if(!(nameField.getText().equals(""))&&!(typeField.getText().equals(""))&&!(amountField.getText().equals(""))&&isDouble(amountField.getText())) {
+//				String addID = String.valueOf(tableStock.getItems().size()+1);
+				Ingredient ing = new Ingredient("New ID", nameField.getText(), typeField.getText(), amountField.getText(), "grams");
+				ControllerDB db = new ControllerDB();
+					if(!db.checkDuplicate(dbUser, usrPass,ing)) {
+						dataStock.add(ing);
+						
+						int row = dataStock.size() - 1;
+
+						// Select the new row
+						tableStock.requestFocus();
+						tableStock.getSelectionModel().select(row);
+						tableStock.getFocusModel().focus(row);
+						addtxtStock.setText("");
+						db.saveStockInSQL(dbUser, usrPass,ing);
+						nameField.setText("");
+						typeField.setText("");
+						amountField.setText("");
+						return;
+					}
+			}
+			
+			String nameValidate = "product name";
+	   		String typeValidate = "product type";
+	   		String amountValidate = "amount of product";
+	   		
+	   		if(nameField.getText().equals("")) {
+				addtxtStock.setText("Your product "+ nameValidate +" is empty.");
+			}
+			if(typeField.getText().equals("")) {
+				addtxtStock.setText("Your type "+ typeValidate +" empty.");
+			}
+			if(!(isDouble(amountField.getText()))) {
+				addtxtStock.setText("Your "+ amountValidate +" should be number.");
+			}
+			if(amountField.getText().equals("")) {
+				addtxtStock.setText("Your "+ amountValidate +" is empty.");
+			}
+			
+			if(nameField.getText().equals("")&&typeField.getText().equals("")) {
+				addtxtStock.setText("Your "+ nameValidate +" and "+ typeValidate +" are empty.");
+			}
+			if(nameField.getText().equals("")&&amountField.getText().equals("")) {
+				addtxtStock.setText("Your "+ nameValidate +" and "+ amountValidate +" are empty.");
+			}
+			if(typeField.getText().equals("")&&amountField.getText().equals("")) {
+				addtxtStock.setText("Your "+ typeValidate +" and "+ amountValidate +" are empty.");
+			}
+			if(nameField.getText().equals("")&&typeField.getText().equals("")&&amountField.getText().equals("")) {
+				addtxtStock.setText("All fields are empty. Please enter your data.");
+			}
+		}
+	}
+   
+   private class DeleteStockButtonListener implements EventHandler<ActionEvent> {
+
+		@Override
+		public void handle(ActionEvent e) {
+
+			// Get selected row and delete
+			int ix = tableStock.getSelectionModel().getSelectedIndex();
+			Ingredient stocktxt = (Ingredient) tableStock.getSelectionModel().getSelectedItem();
+			if(tableStock.getItems().size()!=0) {
+				if(Integer.valueOf(stocktxt.getAmount())==0) {
+					dataStock.remove(ix);
+					
+					ControllerDB db = new ControllerDB();
+					db.deleteStock(dbUser, usrPass, stocktxt);
+					delbtn.setVisible(false);
+				}
+			}
+			
+			addtxtStock.setText("Remove: " + stocktxt.toString());
+
+			// Select a row
+			if (tableStock.getItems().size() == 0) {
+
+//				addtxtStock.setText("No data in table !");
+				delbtn.setVisible(false);
+				return;
+			}
+
+			if (ix != 0) {
+
+				ix = ix -1;
+			}
+
+			tableStock.requestFocus();
+			tableStock.getSelectionModel().select(ix);
+			tableStock.getFocusModel().focus(ix);
+		}
+	}
    
    public static void main(String [] args) {
       Application.launch(args);
