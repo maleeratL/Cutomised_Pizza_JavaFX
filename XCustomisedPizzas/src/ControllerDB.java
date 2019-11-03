@@ -238,4 +238,42 @@ public class ControllerDB {
 		return res;
 	}
 	
+	public boolean deleteStock(String dbUser,String usrPass,Ingredient ing){
+
+		boolean res = true;
+		try {
+			Class.forName("org.mariadb.jdbc.Driver");
+
+			Connection con = null;
+
+			String url = "jdbc:mariadb://localhost/pizzadb";
+
+			con = DriverManager.getConnection(url, dbUser, usrPass);
+
+			Statement stmt = con.createStatement();
+
+			String name = ing.getName();
+			String type = ing.getType();
+			
+			String sql = " delete from ingredients where name = \""+name +"\" and type = \""+type+"\"";
+
+			ResultSet rs = stmt.executeQuery(sql);
+
+
+			if(! rs.next()) {
+				res = false;
+
+			}
+			rs.close();
+			stmt.close();
+			con.close();
+
+
+		}
+		catch(Exception ex) {
+			//			System.out.println("No Duplicate");
+		}
+
+		return res;
+	}
 }	
