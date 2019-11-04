@@ -2,6 +2,8 @@ package JUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Test;
 
 import Cutomer.ControllerDB;
@@ -9,7 +11,6 @@ import Cutomer.Ingredient;
 import Cutomer.Order;
 
 class ControllerDBTest {
-	
 	ControllerDB db = new ControllerDB();
 	String dbUser = "myuser";
 	String usrPass = "mypass";
@@ -133,8 +134,8 @@ class ControllerDBTest {
 		boolean result = db.editStockNameSQL(dbUser, usrPass, ing, editName, editType);
 		assertEquals(true,result);
 	}
-
-
+	
+	
 	@Test
 	void testEditStockNameSQL2() {
 		Ingredient ing = new Ingredient("1", "chicken", "meat", "200", "grams", "100","2019-11-02 20:54:27");
@@ -143,5 +144,6 @@ class ControllerDBTest {
 		boolean result = db.editStockNameSQL(dbUser, usrPass, ing, editName, editType);
 		assertEquals(true,result);
 	}
+
 
 }
