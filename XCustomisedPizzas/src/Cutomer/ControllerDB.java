@@ -365,4 +365,34 @@ public class ControllerDB {
 		return result;
 	}
 	
+	public boolean editPasswordAccountSQL(String dbUser,String usrPass,Staff staff,String editPassword) {
+		boolean result= false;
+		try {
+            Class.forName("org.mariadb.jdbc.Driver");
+
+            Connection con = null;
+
+            String url = "jdbc:mariadb://localhost/pizzadb";
+
+            con = DriverManager.getConnection(url, dbUser, usrPass);
+
+            Statement stmt = con.createStatement(); 
+            
+			String query = "update staff set password = ? where id = ?";
+			PreparedStatement preparedStmt = con.prepareStatement(query);
+            preparedStmt.setString (1, editPassword);
+            preparedStmt.setString (2, staff.getID());
+            preparedStmt.execute();   
+            stmt.close();
+            con.close();
+            result =true;
+		}
+		catch(Exception ex) {
+//			System.out.println("Cannot Save");
+			result =false;
+		}
+		return result;
+	}
+
+
 }
