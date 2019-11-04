@@ -290,5 +290,43 @@ public class ControllerDB {
 		}
 		return result;
 	}
+	
+	public boolean checkAccountDuplicate(String dbUser,String usrPass,String username, String password){
+
+		boolean res = true;
+		try {
+			Class.forName("org.mariadb.jdbc.Driver");
+
+			Connection con = null;
+
+			String url = "jdbc:mariadb://localhost/pizzadb";
+
+			con = DriverManager.getConnection(url, dbUser, usrPass);
+
+			Statement stmt = con.createStatement();
+
+			String sql = " select * from staff where username = \""+username +"\" and password = \""+password+"\"";
+
+			ResultSet rs = stmt.executeQuery(sql);
+
+
+			if(! rs.next()) {
+				res = false;
+
+			}
+			rs.close();
+			stmt.close();
+			con.close();
+
+
+		}
+		catch(Exception ex) {
+//			System.out.println("No Duplicate");
+		}
+
+		return res;
+	}
+	
+
 
 }
