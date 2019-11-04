@@ -1,6 +1,5 @@
 package Cutomer;
 
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -51,19 +50,10 @@ public class ControllerDB {
             else if(tableName.equals("inventory")) {
             	while(rs.next())
                 {
-//            		Date date;
-//            		Timestamp timestamp = rs.getTimestamp("date_time");
-//            		if (timestamp != null)
-//            		    date = new java.util.Date(timestamp.getTime());
             		Ingredient ing = new Ingredient(rs.getString("id"),rs.getString("name"),rs.getString("type"),rs.getString("amount"),rs.getString("unit"),"",String.valueOf(rs.getDate("date_time")+" "+rs.getTime("date_time")));
             		ingredientListDB.add(ing);
                 }
             }
-//            while(rs.next())
-//            {
-//            	Order p = new Order(rs.getString("id"),rs.getString("orderList"),rs.getString("customerName"),rs.getString("status"));
-//            	orderListDB.add(p);
-//            }
             rs.close();
             stmt.close();
             con.close();
@@ -108,7 +98,6 @@ public class ControllerDB {
 	}
 	
 	public double updateStockSQL(String dbUser,String usrPass,Ingredient ing,String current, String update) {
-//		boolean result= false;
 		Double totalNewAmount = null;
 		try {
             Class.forName("org.mariadb.jdbc.Driver");
@@ -124,11 +113,6 @@ public class ControllerDB {
             totalNewAmount = Double.valueOf(current);
             totalNewAmount = totalNewAmount+Double.valueOf(update);
             
-//            System.out.println("=========================");
-//            System.out.println(ing.getNewAmount()+", "+ing.getNewAmount());
-//            System.out.println(Double.valueOf(ing.getNewAmount())+Double.valueOf(ing.getNewAmount()));
-//            System.out.println("Total: "+totalNewAmount);
-
             String query = "update ingredients set amount = "+ totalNewAmount +" where id = "+ing.getID(); 
 
             ResultSet rs = stmt.executeQuery(query);
@@ -146,11 +130,8 @@ public class ControllerDB {
             
             stmt.close();
             con.close();
-//            result =true;
 		}
 		catch(Exception ex) {
-//			System.out.println("Cannot Save");
-//			result =false;
 		}
 		return totalNewAmount;
 	}
@@ -158,8 +139,6 @@ public class ControllerDB {
 	public boolean saveStockInSQL(String dbUser,String usrPass,Ingredient ing) {
 		boolean result= false;
 		try {
-//			String dbUser = "myuser";
-//            String usrPass = "mypass";
             Class.forName("org.mariadb.jdbc.Driver");
 
             Connection con = null;
@@ -182,7 +161,6 @@ public class ControllerDB {
                   preparedStmt.setString (2, ing.getType());
                   preparedStmt.setString (3, ing.getAmount());
                   preparedStmt.setString (4, ing.getUnit());
-//                  preparedStmt.setString (5, ing.getNationality());
                   preparedStmt.execute();
                   
                   query = "insert into inventory (name,type,amount,unit,date_time)VALUES(?,?,?,?,now())";
@@ -237,7 +215,7 @@ public class ControllerDB {
 
 		}
 		catch(Exception ex) {
-			//			System.out.println("No Duplicate");
+//			System.out.println("No Duplicate");
 		}
 
 		return res;
@@ -276,7 +254,7 @@ public class ControllerDB {
 
 		}
 		catch(Exception ex) {
-			//			System.out.println("No Duplicate");
+//			System.out.println("No Duplicate");
 		}
 
 		return res;
@@ -312,16 +290,5 @@ public class ControllerDB {
 		}
 		return result;
 	}
-
-//	public static void main(String[] args) {
-//		ControllerDB db = new ControllerDB();
-//		String dbUser = "myuser";
-//		String usrPass = "mypass";
-//		db.accessSQL(dbUser, usrPass, "inventory");
-//		for(Ingredient ing:db.ingredientListDB) {
-//			System.out.println(ing.getID()+" : "+ing.getDateTime());
-//		}
-//
-//	}
 
 }

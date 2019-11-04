@@ -37,7 +37,6 @@ public class ProductionLineTable extends Application {
    private TextField amountField;
    private TextField editNameField;
    private TextField editTypeField;
-//   private Text ordertxtStatus;
    private Text reordertxtStatus;
    private Text addtxtStock;
    private Text edittxtStock;
@@ -73,7 +72,6 @@ public class ProductionLineTable extends Application {
    }
    
    public void headingTabSetUp() {
-//	   ordertxtStatus = new Text();
 	   reordertxtStatus = new Text();
 	   addtxtStock = new Text();
 	   edittxtStock = new Text();
@@ -93,7 +91,6 @@ public class ProductionLineTable extends Application {
 	   buttonHbTab1.setAlignment(Pos.CENTER);
 	   buttonHbTab1.setPadding(new Insets(0, 0, 20, 0));
 	   buttonHbTab1.getChildren().addAll(statusbtn);
-//	   buttonHbTab1.getChildren().addAll(statusbtn,delbtn);
 
 	   vboxTab1 = new VBox(20);
 	   vboxTab1.setPadding(new Insets(20, 20, 20, 20));
@@ -206,10 +203,6 @@ public class ProductionLineTable extends Application {
 	   editFormTab6.setSpacing(20);
 	   editFormTab6.setPadding(new Insets(10, 20, 20, 20));
 	   
-//	   VBox editVbTab6 = new VBox(10);
-//	   editVbTab6.setAlignment(Pos.CENTER);
-//	   editVbTab6.getChildren().addAll(tableEdit,edittxtStock,editFormTab6);
-	   
 	   vboxTab6 = new VBox(20);
 	   vboxTab6.setPadding(new Insets(20, 20, 20, 20));
 	   vboxTab6.getChildren().addAll(labelHbTab6,tableEdit,edittxtStock,editFormTab6);
@@ -225,9 +218,6 @@ public class ProductionLineTable extends Application {
 			   tableEdit.getItems().clear();
 			   dataOrder = dummydataOrder("waiting");
 			   tableOrder.setItems(dataOrder);
-//			   if (tableOrder.getItems().size() > 0) {
-//				   ordertxtStatus.setText("");
-//			   }
 		   }
 	   });
 	   
@@ -243,7 +233,7 @@ public class ProductionLineTable extends Application {
 				   reordertxtStatus.setText("");
 			   }
 			   else {
-				   reordertxtStatus.setText("Reorder Amount >> Double click on number");
+				   reordertxtStatus.setText("Reorder Amount >> Double click on the value and press the 'Enter' key to confirm");
 			   }
 		   }
 	   });
@@ -267,7 +257,6 @@ public class ProductionLineTable extends Application {
 			   tableReorder.getItems().clear();
 			   tableStock.getItems().clear();
 			   tableEdit.getItems().clear();
-//			   tableInventory.getItems().clear();
 			   dataProduced = dummydataOrder("produced");
 			   tableProduced.setItems(dataProduced);
 		   }
@@ -282,7 +271,6 @@ public class ProductionLineTable extends Application {
 			   tableProduced.getItems().clear();
 			   dataInventory = dummydataInventory();
 			   tableInventory.setItems(dataInventory);
-//			   this.setInventoryTable();
 		   }
 	   });
 	   
@@ -297,7 +285,6 @@ public class ProductionLineTable extends Application {
 			   editNameField.setText("");
 			   editTypeField.setText("");
 			   edittxtStock.setText("");
-//			   this.setInventoryTable();
 		   }
 	   });
    }
@@ -317,7 +304,6 @@ public class ProductionLineTable extends Application {
 
 	   // add tab 
 	   tabpane.getTabs().addAll(tab,tab4,tab2,tab3,tab5,tab6); 
-//	   tabpane.getTabs().add(tab2); 
 	   
 	   tab.setContent(vboxTab1);
 	   tab2.setContent(vboxTab2);
@@ -355,13 +341,6 @@ public class ProductionLineTable extends Application {
 	   tableOrder.getSelectionModel().selectedIndexProperty().addListener(new RowChangeHandler());
 	   tableOrder.setEditable(true);
 	   
-//	   IDCol.setCellFactory(getCustomCellFactory("black","14px","normal","Arial","top_center"));
-//	   statusCol.setCellFactory(getCustomCellFactory("black","14px","bold","Arial","center"));
-	   
-//	   statusCol.setCellFactory(TextFieldTableCell.forTableColumn());
-//	   statusCol.setOnEditCommit(event -> (event.getTableView().
-//			   getItems().get(event.getTablePosition().getRow())).
-//			   setStatus(event.getNewValue()));
    }
    
    public void setReorderTable() {
@@ -369,8 +348,6 @@ public class ProductionLineTable extends Application {
 	   dataReorder = dummydataReorder();
 	   tableReorder.setItems(dataReorder);
 	   
-//	   TableColumn<Ingredient,String> IDCol = new TableColumn<>("ID");
-//	   IDCol.setCellValueFactory(new PropertyValueFactory<>("ID"));
 	   TableColumn<Ingredient,String> amountCol = new TableColumn<>("Current Amount");
 	   amountCol.setCellValueFactory(new PropertyValueFactory<>("amount"));
 	   TableColumn<Ingredient,String> unitCol = new TableColumn<>("Unit");
@@ -388,8 +365,6 @@ public class ProductionLineTable extends Application {
 	   tableReorder.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 	   tableReorder.getSelectionModel().selectedIndexProperty().addListener(new RowChangeHandlerReorder());
 	   tableReorder.setEditable(true);
-	   
-//	   statusCol.setCellFactory(getCustomCellFactory("red","16px","Arial","center"));
 	   
 	   newAmountCol.setCellFactory(TextFieldTableCell.forTableColumn());
 	   newAmountCol.setOnEditCommit(event -> (event.getTableView().
@@ -412,8 +387,6 @@ public class ProductionLineTable extends Application {
 	   nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
 	   TableColumn<Ingredient,String> typeCol = new TableColumn<>("Type");
 	   typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
-//	   TableColumn<Ingredient,String> newAmountCol = new TableColumn("New Amount Order");
-//	   newAmountCol.setCellValueFactory(new PropertyValueFactory<>("newAmount"));
 
 	   tableStock.getColumns().setAll(IDCol,nameCol,typeCol,amountCol,unitCol);
 	   tableStock.setPrefWidth(400);
@@ -421,13 +394,6 @@ public class ProductionLineTable extends Application {
 	   tableStock.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 	   tableStock.getSelectionModel().selectedIndexProperty().addListener(new RowChangeHandlerStock());
 	   tableStock.setEditable(true);
-	   
-//	   statusCol.setCellFactory(getCustomCellFactory("red","16px","Arial","center"));
-	   
-//	   newAmountCol.setCellFactory(TextFieldTableCell.forTableColumn());
-//	   newAmountCol.setOnEditCommit(event -> (event.getTableView().
-//			   getItems().get(event.getTablePosition().getRow())).
-//			   setNewAmount(event.getNewValue()));
    }
    
    public void setProduceTable() {
@@ -452,13 +418,6 @@ public class ProductionLineTable extends Application {
 	   tableProduced.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 	   tableProduced.getSelectionModel().selectedIndexProperty().addListener(new RowChangeHandler());
 	   tableProduced.setEditable(true);
-	   
-//	   statusCol.setCellFactory(getCustomCellFactory("red","16px","Arial","center"));
-	   
-//	   statusCol.setCellFactory(TextFieldTableCell.forTableColumn());
-//	   statusCol.setOnEditCommit(event -> (event.getTableView().
-//			   getItems().get(event.getTablePosition().getRow())).
-//			   setStatus(event.getNewValue()));
    }
    
    
@@ -530,8 +489,6 @@ public class ProductionLineTable extends Application {
 	   nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
 	   TableColumn<Ingredient,String> typeCol = new TableColumn<>("Type");
 	   typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
-//	   TableColumn<Ingredient,String> newAmountCol = new TableColumn("New Amount Order");
-//	   newAmountCol.setCellValueFactory(new PropertyValueFactory<>("newAmount"));
 
 	   tableEdit.getColumns().setAll(IDCol,nameCol,typeCol,amountCol,unitCol);
 	   tableEdit.setPrefWidth(800);
@@ -539,40 +496,7 @@ public class ProductionLineTable extends Application {
 	   tableEdit.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 	   tableEdit.getSelectionModel().selectedIndexProperty().addListener(new RowChangeHandlerEditStock());
 	   tableEdit.setEditable(true);
-	   
-//	   statusCol.setCellFactory(getCustomCellFactory("red","16px","Arial","center"));
-	   
-//	   newAmountCol.setCellFactory(TextFieldTableCell.forTableColumn());
-//	   newAmountCol.setOnEditCommit(event -> (event.getTableView().
-//			   getItems().get(event.getTablePosition().getRow())).
-//			   setNewAmount(event.getNewValue()));
    }
-   
-//   private Callback<TableColumn<Order, String>, TableCell<Order, String>> getCustomCellFactory(final String color,String fontSize, String fontWeight,String fontFamily,String textAlign) {
-//       return new Callback<TableColumn<Order, String>, TableCell<Order, String>>() {
-//
-//           @Override
-//           public TableCell<Order, String> call(TableColumn<Order, String> param) {
-//               TableCell<Order, String> cell = new TableCell<Order, String>() {
-//
-//                   @Override
-//                   public void updateItem(final String item, boolean empty) {
-//                       if (item != null) {
-//                           setText(item);
-//                           setStyle("-fx-text-fill: " + color + ";\n"+
-//                        		   "-fx-font-size: " + fontSize + ";\n"+
-//                        		   "-fx-font-family: " + fontFamily + ";\n"+
-//                        		   "-fx-alignment: " + textAlign + ";\n"+
-//                        		   "-fx-font-weight: " + fontWeight + ";");
-////                           setStyle("-fx-font-size: " + fontsize + ";");
-////                           setStyle("-fx-font-family: " + fontfamily + ";");
-//                       }
-//                   }
-//               };
-//               return cell;
-//           }
-//       };
-//   }
    
    
    private class RowChangeHandler implements ChangeListener {
@@ -581,13 +505,10 @@ public class ProductionLineTable extends Application {
          int val = ((Number)newVal).intValue();
          if (dataOrder.size()<=0) {
         	 statusbtn.setVisible(false);
-//        	 reorderbtn.setVisible(false);
             return;
          }
         Order pb= (Order) dataOrder.get(val);
-//        ordertxtStatus.setText(pb.toString());
         statusbtn.setVisible(true);
-//        reorderbtn.setVisible(true);
       }
    }
    
@@ -596,13 +517,10 @@ public class ProductionLineTable extends Application {
 	      public void changed(ObservableValue ov, Object oldVal, Object newVal) {
 	         int val = ((Number)newVal).intValue();
 	         if (dataReorder.size()<=0) {
-//	        	 statusbtn.setVisible(false);
 	        	 reorderbtn.setVisible(false);
 	            return;
 	         }
 	        Ingredient pb= (Ingredient) dataReorder.get(val);
-//	        ordertxtStatus.setText(pb.toString());
-//	        statusbtn.setVisible(true);
 	        reorderbtn.setVisible(true);
 	      }
 	   }
@@ -612,20 +530,16 @@ public class ProductionLineTable extends Application {
 	      public void changed(ObservableValue ov, Object oldVal, Object newVal) {
 	         int val = ((Number)newVal).intValue();
 	         if (dataStock.size()<=0) {
-//	        	 statusbtn.setVisible(false);
 	        	 delbtn.setVisible(false);
 	            return;
 	         }
 	        Ingredient pb= (Ingredient) dataStock.get(val);
-//	        ordertxtStatus.setText(pb.toString());
-//	        statusbtn.setVisible(true);
 	        if(Integer.valueOf(pb.getAmount())==0) {
 	        	delbtn.setVisible(true);
 	        }
 	        else {
 	        	delbtn.setVisible(false);
 	        }
-//	        delbtn.setVisible(true);
 	      }
 	   }
    
@@ -634,22 +548,11 @@ public class ProductionLineTable extends Application {
    			public void changed(ObservableValue ov, Object oldVal, Object newVal) {
    				int val = ((Number)newVal).intValue();
    				if (dataEdit.size()<=0) {
-   					//	        	 statusbtn.setVisible(false);
-//   					delbtn.setVisible(false);
    					return;
    				}
    				Ingredient pb= (Ingredient) dataEdit.get(val);
-   				//	        ordertxtStatus.setText(pb.toString());
-   				//	        statusbtn.setVisible(true);
-//   				if(Integer.valueOf(pb.getAmount())==0) {
-//   					delbtn.setVisible(true);
-//   				}
-//   				else {
-//   					delbtn.setVisible(false);
-//   				}
    				editNameField.setText(pb.getName());
    				editTypeField.setText(pb.getType());
-   				//	        delbtn.setVisible(true);
    			}
 	   }
    
@@ -716,17 +619,10 @@ public class ProductionLineTable extends Application {
 			Order ordertxt = (Order) tableOrder.getSelectionModel().getSelectedItem();
 			if(tableOrder.getItems().size()!=0) {
 				dataOrder.remove(ix);
-				
-				//call to save to DB here for reorder0
 			}
 			
-//			ordertxtStatus.setText("Deleted: " + ordertxt.toString());
-
 			// Select a row
 			if (tableOrder.getItems().size() == 0) {
-
-//				ordertxtStatus.setText("No data in table !");
-//				delbtn.setVisible(false);
 				return;
 			}
 
@@ -751,17 +647,12 @@ public class ProductionLineTable extends Application {
 			Ingredient ordertxt = (Ingredient) tableReorder.getSelectionModel().getSelectedItem();
 			if(tableReorder.getItems().size()!=0) {
 				dataReorder.remove(ix);
-				
-				//call to save to DB here for reorder0
 			}
 			
 			reordertxtStatus.setText("Reorder: " + ordertxt.toString());
 
 			// Select a row
 			if (tableReorder.getItems().size() == 0) {
-
-//				reordertxtStatus.setText("No data in table !");
-//				delbtn.setVisible(false);
 				return;
 			}
 
@@ -783,18 +674,9 @@ public class ProductionLineTable extends Application {
 		   Order selectedItems = tableOrder.getSelectionModel().getSelectedItems().get(0);
 		   selectedItems.setStatus("Produced");
 		   String first_Column = selectedItems.toString().split(",")[0].substring(0);
-//		   System.out.println(first_Column);
-//		   ordertxtStatus.setText(first_Column);
 		   
 		   ControllerDB db = new ControllerDB();
 		   db.updateOrderStatusSQL(dbUser, usrPass,selectedItems);
-		   
-//		  for(Order o : dummydataOrder("waiting")) {
-//			  if(o.getID().equals(selectedItems.getID())) {
-//				  System.out.println("============================");
-//				  System.out.println(o.getID()+" : "+o.getToppings()+" : "+o.getStatus());
-//			  }
-//		  } 
 
 		   DeleteButtonListener del = new DeleteButtonListener();
 		   del.handle(e);
@@ -807,24 +689,10 @@ public class ProductionLineTable extends Application {
 	   @Override
 	   public void handle(ActionEvent e) {
 		   Ingredient selectedItems = tableReorder.getSelectionModel().getSelectedItems().get(0);
-//		   selectedItems.setStatus("Produced");
 		   String first_Column = selectedItems.toString().split(",")[0].substring(0);
-//		   System.out.println(first_Column);
-//		   ordertxtStatus.setText(first_Column);
-
-//		   System.out.println(selectedItems.getAmount()+", "+selectedItems.getNewAmount());
 		   ControllerDB db = new ControllerDB();
-//		   db.accessSQL(dbUser, usrPass, "ingredients");
-//		   for(Ingredient ing:db.ingredientListDB) {
-//			   if(selectedItems.getID().equals(ing.getID())) {
-//				   db.updateStockSQL(dbUser, usrPass,new Ingredient(selectedItems.getID(),selectedItems.getName()
-//						   ,selectedItems.getType(),selectedItems.getAmount(),selectedItems.getUnit()
-//						   ,selectedItems.getNewAmount()));
-//			   }
-//		   }
 		
 		   db.updateStockSQL(dbUser, usrPass,selectedItems,selectedItems.getAmount(),selectedItems.getNewAmount());
-//		   System.out.println(selectedItems.getAmount()+", "+selectedItems.getNewAmount());
 
 		   DeleteIngredientListener del = new DeleteIngredientListener();
 		   del.handle(e);
@@ -847,7 +715,6 @@ public class ProductionLineTable extends Application {
 		@Override
 		public void handle(ActionEvent e) {
 			if(!(nameField.getText().equals(""))&&!(typeField.getText().equals(""))&&!(amountField.getText().equals(""))&&isDouble(amountField.getText())) {
-//				String addID = String.valueOf(tableStock.getItems().size()+1);
 				Ingredient ing = new Ingredient("New ID", nameField.getText(), typeField.getText(), amountField.getText(), "grams");
 				ControllerDB db = new ControllerDB();
 					if(!db.checkDuplicate(dbUser, usrPass,ing)) {
@@ -922,8 +789,6 @@ public class ProductionLineTable extends Application {
 
 			// Select a row
 			if (tableStock.getItems().size() == 0) {
-
-//				addtxtStock.setText("No data in table !");
 				delbtn.setVisible(false);
 				return;
 			}
