@@ -1,4 +1,6 @@
 package Cutomer;
+
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -161,6 +163,8 @@ public class ControllerDB {
             Class.forName("org.mariadb.jdbc.Driver");
 
             Connection con = null;
+            
+         
 
             String url = "jdbc:mariadb://localhost/pizzadb";
 
@@ -277,4 +281,47 @@ public class ControllerDB {
 
 		return res;
 	}
-}	
+	
+	
+	public boolean editStockNameSQL(String dbUser,String usrPass,Ingredient ing,String editName,String editType) {
+		boolean result= false;
+		try {
+            Class.forName("org.mariadb.jdbc.Driver");
+
+            Connection con = null;
+
+            String url = "jdbc:mariadb://localhost/pizzadb";
+
+            con = DriverManager.getConnection(url, dbUser, usrPass);
+
+            Statement stmt = con.createStatement(); 
+            
+			String query = "update ingredients set name = ?, type = ? where id = ?";
+			PreparedStatement preparedStmt = con.prepareStatement(query);
+            preparedStmt.setString (1, editName);
+            preparedStmt.setString (2, editType);
+            preparedStmt.setString (3, ing.getID());
+            preparedStmt.execute();   
+            stmt.close();
+            con.close();
+            result =true;
+		}
+		catch(Exception ex) {
+//			System.out.println("Cannot Save");
+			result =false;
+		}
+		return result;
+	}
+
+//	public static void main(String[] args) {
+//		ControllerDB db = new ControllerDB();
+//		String dbUser = "myuser";
+//		String usrPass = "mypass";
+//		db.accessSQL(dbUser, usrPass, "inventory");
+//		for(Ingredient ing:db.ingredientListDB) {
+//			System.out.println(ing.getID()+" : "+ing.getDateTime());
+//		}
+//
+//	}
+
+}
