@@ -123,5 +123,25 @@ class ControllerDBTest {
 		boolean result = db.deleteStock(dbUser, usrPass, ing);
 		assertEquals(true,result);
 	}
+	
+	//============================ editStockNameSQL =====================
+	@Test
+	void testEditStockNameSQL() {
+		Ingredient ing = new Ingredient("9", "ham", "meat", "200", "grams", "100","2019-11-02 20:54:27");
+		String editName = "Carrot";
+		String editType = "veggies";
+		boolean result = db.editStockNameSQL(dbUser, usrPass, ing, editName, editType);
+		assertEquals(true,result);
+	}
+
+
+	@Test
+	void testEditStockNameSQL2() {
+		Ingredient ing = new Ingredient("1", "chicken", "meat", "200", "grams", "100","2019-11-02 20:54:27");
+		String editName = "Tomatoes";
+		String editType = "veggies";
+		boolean result = db.editStockNameSQL(dbUser, usrPass, ing, editName, editType);
+		assertEquals(true,result);
+	}
 
 }
