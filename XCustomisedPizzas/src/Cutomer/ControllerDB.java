@@ -327,6 +327,42 @@ public class ControllerDB {
 		return res;
 	}
 	
+	public boolean createAccountInSQL(String dbUser,String usrPass,Staff staff) {
+		boolean result= false;
+		try {
+            Class.forName("org.mariadb.jdbc.Driver");
 
+            Connection con = null;
+            
+         
 
+            String url = "jdbc:mariadb://localhost/pizzadb";
+
+            con = DriverManager.getConnection(url, dbUser, usrPass);
+
+            Statement stmt = con.createStatement();     
+           
+                      
+            String query = " insert into staff (name, lastname, username, password)"
+                    + " values (?, ?, ?, ?)";
+
+                  // create the mysql insert preparedstatement
+                  PreparedStatement preparedStmt = con.prepareStatement(query);
+                  preparedStmt.setString (1, staff.getName());
+                  preparedStmt.setString (2, staff.getLastname());
+                  preparedStmt.setString (3, staff.getUsername());
+                  preparedStmt.setString (4, staff.getPassword());
+                  preparedStmt.execute();
+
+            stmt.close();
+            con.close();
+            result =true;
+		}
+		catch(Exception ex) {
+//			System.out.println("Cannot Save");
+			result =false;
+		}
+		return result;
+	}
+	
 }
