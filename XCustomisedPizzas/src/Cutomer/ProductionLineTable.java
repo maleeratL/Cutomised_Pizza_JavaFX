@@ -67,34 +67,9 @@ public class ProductionLineTable extends Application {
       this.headingTabSetUp();
       
       
-    //Menu Main
-      Menu menu = new Menu("Menu");
-      MenuItem menuSettings = new MenuItem("Settings");
-      MenuItem menuLogout = new MenuItem("Log out");
-      SeparatorMenuItem separator = new SeparatorMenuItem();
-      menu.getItems().add(separator);
-      menu.getItems().add(menuSettings);
-      menu.getItems().add(menuLogout);
-      MenuBar menuBar = new MenuBar();
-      menuBar.getMenus().add(menu);
-      
-      //Menu Account
-      Menu menuAccount = new Menu("Menu");
-      MenuItem menuMain = new MenuItem("Main");
-      MenuItem menuLogoutAccount = new MenuItem("Log out");
-      separator = new SeparatorMenuItem();
-      menuAccount.getItems().addAll(separator,menuMain,menuLogoutAccount);
-//      menuAccount.getItems().add(menuSettings);
-//      menuAccount.getItems().add(menuLogoutAccount);
-      MenuBar menuBarAccount = new MenuBar();
-      menuBarAccount.getMenus().add(menuAccount);
-      
-      VBox wrapVb = new VBox(menuBar,setUptab());
-      VBox wrapAccountVb = new VBox(menuBarAccount);
-      
       
       // W x H
-      Scene scene = new Scene(wrapVb, 1050, 775);
+      Scene scene = new Scene(setUptab(), 1050, 775);
       primaryStage.setScene(scene);
       primaryStage.show();
    }
