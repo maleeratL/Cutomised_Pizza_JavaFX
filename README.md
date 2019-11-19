@@ -1,4 +1,17 @@
 # Cutomised_Pizza_JavaFX
+This project is a project which aim to create a production line application that will be able to change status of orders, tracking total amount of inredients in stock, reorder ingredients, and view history of ingredient inventory.
+
+## Function Details
+##### Core functions
+* Change orders status (waiting to produced)
+* Display waiting and produced order lists
+* Reorder ingredients which have threadhold lower than 500
+* Fliter search inventory history by name, type, amount and date and time of ingredients that were reordered
+
+##### Extra functions
+* Allow to edit name and type of ingredients
+* Allow to delete ingredients which have threadhold equal to 0
+* Allow to add a new ingredient in the stock with automatic updated in the inventory history
 
 ## Database
 Tables
